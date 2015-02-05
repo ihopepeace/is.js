@@ -24,7 +24,7 @@
 
     // Baseline
     /* -------------------------------------------------------------------------- */
-    
+
     var root = this;
     var previousIs = root.is;
 
@@ -789,6 +789,6 @@
         root.is = previousIs;
         return this;
     };
-    
+
     return is;
 }));
