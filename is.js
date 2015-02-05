@@ -1,4 +1,4 @@
-// is.js 0.3.0
+// is.js 0.4.0
 // Author: Aras Atasaygin
 
 // AMD with global, Node, or global
@@ -24,13 +24,13 @@
 
     // Baseline
     /* -------------------------------------------------------------------------- */
-    console.log(this === window);
+    
     var root = this;
     var previousIs = root.is;
 
     // define 'is' object and current version
     is = {};
-    is.VERSION = '0.3.0';
+    is.VERSION = '0.4.0';
 
     // define interfaces
     is.not = {};
@@ -58,10 +58,8 @@
                 parameters = parameters[0];
                 length = parameters.length;
             }
-            var result;
             for (var i = 0; i < length; i++) {
-                result = func.call(null, parameters[i]);
-                if(!result){
+                if (!func.call(null, parameters[i])) {
                     return false;
                 }
             }
@@ -78,10 +76,8 @@
                 parameters = parameters[0];
                 length = parameters.length;
             }
-            var result;
             for (var i = 0; i < length; i++) {
-                result = func.call(null, parameters[i]);
-                if(result){
+                if (func.call(null, parameters[i])) {
                     return true;
                 }
             }
@@ -206,7 +202,7 @@
     // is a given value space?
     // horizantal tab: 9, line feed: 10, vertical tab: 11, form feed: 12, carriage return: 13, space: 32
     is.space =  function(value) {
-        if(is.string(value)) {
+        if(is.char(value)) {
             var characterCode = value.charCodeAt(0);
             return (characterCode >  8 && characterCode < 14) || characterCode === 32;
         } else {
@@ -341,7 +337,7 @@
     // String checks
     /* -------------------------------------------------------------------------- */
 
-    // is a given string inculde parameter substring?
+    // is a given string include parameter substring?
     is.include = String.prototype.includes || function(str, substr) {
         return str.indexOf(substr) > -1;
     };
@@ -793,6 +789,6 @@
         root.is = previousIs;
         return this;
     };
-    console.log(is);
+    
     return is;
 }));
