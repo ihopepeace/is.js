@@ -1394,6 +1394,9 @@ describe("regexp checks", function() {
         it("should return true if given value is Canada postal code", function() {
             expect(is.caPostalCode('L8V3Y1')).to.be.true;
         });
+        it("should return true if given value is Canada postal code with space", function() {
+            expect(is.caPostalCode('L8V 3Y1')).to.be.true;
+        });
         it("should return false if given value is not Canada postal code", function() {
             expect(is.caPostalCode('1')).to.be.false;
         });
@@ -1973,6 +1976,42 @@ describe("string checks", function() {
             expect(is.any.capitalized(['test is good', 'chase and status'])).to.be.false;
         });
     });
+    describe("is.palindrome", function() {
+        it("should return true if given string is palindrome", function() {
+            expect(is.palindrome('testset')).to.be.true;
+        });
+        it("should return false if given string is not palindrome", function() {
+            expect(is.palindrome('test')).to.be.false;
+        });
+    });
+    describe("is.not.palindrome", function() {
+        it("should return false if given string is palindrome", function() {
+            expect(is.not.palindrome('testset')).to.be.false;
+        });
+        it("should return true if given string is not palindrome", function() {
+            expect(is.not.palindrome('test')).to.be.true;
+        });
+    });
+    describe("is.all.palindrome", function() {
+        it("should return true if all the given strings are palindrome", function() {
+            expect(is.all.palindrome('testset', 'tt')).to.be.true;
+            expect(is.all.palindrome(['testset', 'tt'])).to.be.true;
+        });
+        it("should return false if any given string is not palindrome", function() {
+            expect(is.all.palindrome('test', 'tt')).to.be.false;
+            expect(is.all.palindrome(['test', 'tt'])).to.be.false;
+        });
+    });
+    describe("is.any.palindrome", function() {
+        it("should return true if any given string is palindrome", function() {
+            expect(is.any.palindrome('testset', 'te')).to.be.true;
+            expect(is.any.palindrome(['testset', 'te'])).to.be.true;
+        });
+        it("should return false if all given strings are not palindrome", function() {
+            expect(is.any.palindrome('test', 'te')).to.be.false;
+            expect(is.any.palindrome(['test', 'te'])).to.be.false;
+        });
+    });
 });
 describe("time checks", function() {
     describe("is.today", function() {
@@ -2280,6 +2319,42 @@ describe("time checks", function() {
         it("should return true if given year string is not date objects' year", function() {
             var time = 1421572235303;
             expect(is.not.year(new Date(time), 2016)).to.be.true;
+        });
+    });
+    describe("is.leapYear", function() {
+        it("should return true if given year is a leap year", function() {
+            expect(is.leapYear(2016)).to.be.true;
+        });
+        it("should return false if given year is not a leap year", function() {
+            expect(is.leapYear(2015)).to.be.false;
+        });
+    });
+    describe("is.not.leapYear", function() {
+        it("should return false if given year is a leap year", function() {
+            expect(is.not.leapYear(2016)).to.be.false;
+        });
+        it("should return true if given year is not a leap year", function() {
+            expect(is.not.leapYear(2015)).to.be.true;
+        });
+    });
+    describe("is.all.leapYear", function() {
+        it("should return true if all given years are leap years", function() {
+            expect(is.all.leapYear(2080, 2180)).to.be.true;
+            expect(is.all.leapYear([2080, 2180])).to.be.true;
+        });
+        it("should return false if any given year is not a leap year", function() {
+            expect(is.all.leapYear(2015, 2080)).to.be.false;
+            expect(is.all.leapYear([2015, 2080])).to.be.false;
+        });
+    });
+    describe("is.any.leapYear", function() {
+        it("should return true if any given year is leap year", function() {
+            expect(is.any.leapYear(2080, 2181)).to.be.true;
+            expect(is.any.leapYear([2080, 2181])).to.be.true;
+        });
+        it("should return false if all given years are not a leap years", function() {
+            expect(is.any.leapYear(2015, 2081)).to.be.false;
+            expect(is.any.leapYear([2015, 2081])).to.be.false;
         });
     });
     describe("is.weekend", function() {
@@ -2940,6 +3015,47 @@ describe("object checks", function() {
         it("should return false if all given objects are not window object", function() {
             expect(is.any.windowObject({}, {})).to.be.false;
             expect(is.any.windowObject([{}, {}])).to.be.false;
+        });
+    });
+    describe("is.domNode", function() {
+        it("should return true if given object is a DOM node", function() {
+            var obj = document.createElement('div');
+            expect(is.domNode(obj)).to.be.true;
+        });
+        it("should return false if given object is not a DOM node", function() {
+            expect(is.domNode({})).to.be.false;
+        });
+    });
+    describe("is.not.domNode", function() {
+        it("should return false if given object is a DOM node", function() {
+            var obj = document.createElement('span');
+            expect(is.not.domNode(obj)).to.be.false;
+        });
+        it("should return true if given object is not a DOM node", function() {
+            expect(is.not.domNode({})).to.be.true;
+        });
+    });
+    describe("is.any.domNode", function() {
+        it("should return true if any given object is a DOM node", function() {
+            var obj = document.createElement('blockquote');
+            expect(is.any.domNode(window, {}, obj)).to.be.true;
+            expect(is.any.domNode([window, {}, obj])).to.be.true;
+        });
+        it("should return false if all given objects are not DOM nodes", function() {
+            expect(is.any.domNode({}, {})).to.be.false;
+            expect(is.any.domNode([{}, {}])).to.be.false;
+        });
+    });
+    describe("is.all.domNode", function() {
+        it("should return true if all given objects are DOM nodes", function() {
+            var obj1 = document.createElement('em');
+            var obj2 = document.createElement('a');
+            expect(is.all.domNode(obj1, obj2)).to.be.true;
+            expect(is.all.domNode([obj1, obj2])).to.be.true;
+        });
+        it("should return false if any given object is not a DOM node", function() {
+            expect(is.all.domNode({}, window)).to.be.false;
+            expect(is.all.domNode([{}, window])).to.be.false;
         });
     });
 });
